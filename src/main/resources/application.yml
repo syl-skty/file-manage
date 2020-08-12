@@ -1,0 +1,15 @@
+fastdfs:
+  bufferSize: 1024
+  configpath: classpath:config/fastdfs-client.properties
+
+#数据库连接相关
+spring:
+  datasource:
+    url: jdbc:mysql://49.234.215.112:3306/user?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true
+    name: skty
+    password: shiyonglong2
+
+server:
+  port: 8080
+  servlet:
+    context-path: fileManage

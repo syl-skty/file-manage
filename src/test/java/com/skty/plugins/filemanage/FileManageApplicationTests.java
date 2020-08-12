@@ -22,9 +22,9 @@ class FileManageApplicationTests {
 
     @Test
     void testDownload() {
-        try (FileOutputStream outputStream = new FileOutputStream("C:\\Users\\zhaoyun\\Desktop\\test.jpg")) {
+        try (FileOutputStream outputStream = new FileOutputStream("C:\\Users\\skty\\Desktop\\test2.pdf")) {
             fastDfsTemplate.downloadFile(
-                    new DownloadFDfsFile.callbackFile("group1", "M00/00/00/rBEAB18xGc6AKjngAAK9_aKPz4o853.jpg", downloading -> {
+                    new DownloadFDfsFile.callbackFile("group1", "M00/00/00/rBEAB18z9N6AO2H2AR5CI56Bqq4353.pdf", downloading -> {
                         try {
                             outputStream.write(downloading.getData());
                         } catch (IOException e) {
@@ -51,7 +51,7 @@ class FileManageApplicationTests {
     @Test
     void testUpload1() {
         try {
-            FDfsFile file = fastDfsTemplate.uploadFile(new UploadFDfsFile.StreamFile("group1", new FileInputStream("C:\\Users\\zhaoyun\\Desktop\\README.pdf"), "pdf"));
+            FDfsFile file = fastDfsTemplate.uploadFile(new UploadFDfsFile.StreamFile("group1", new FileInputStream("C:\\Users\\skty\\Desktop\\test.pdf"), "pdf"));
             System.out.println(file);
         } catch (IOException e) {
             e.printStackTrace();

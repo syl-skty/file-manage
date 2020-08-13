@@ -6,7 +6,7 @@ fastdfs:
 spring:
   datasource:
     file-manage:
-      url: jdbc:mysql://49.234.215.112:3306/file_manage?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true
+      url: jdbc:mysql://49.234.215.112:3306/file_manage?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=GMT%2B8
       password: shiyonglong2
       username: skty
 
@@ -14,3 +14,18 @@ server:
   port: 8080
   servlet:
     context-path: /fileManage
+
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+logging:
+  level:
+    com:
+      skty:
+        plugins:
+          filemanage:
+            db:
+              mapper: debug
+
+

@@ -1,8 +1,6 @@
-package com.skty.plugins.filemanage.entity;
+package com.skty.plugins.filemanage.db.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 
 import java.util.Date;
 
@@ -11,14 +9,15 @@ import java.util.Date;
  */
 @TableName("directory")
 public class Directory {
-    @TableId
+
+    @TableId(type = IdType.AUTO)
     private Long id;
     private String name;
     @TableField(value = "parent_id")
     private Long parentId;
     @TableField(value = "create_date")
     private Date createDate;
- 
+
 
     public Long getId() {
         return id;

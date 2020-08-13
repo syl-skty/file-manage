@@ -1,5 +1,6 @@
 package com.skty.plugins.filemanage.config.db;
 
+import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
@@ -22,7 +23,7 @@ import java.util.Map;
 @Configuration
 @EnableTransactionManagement //开启事务管理
 //开始mybatis的包扫描，将会自动生成mapper接口的代理类
-@MapperScan(basePackages = "com.skty.plugins.filemanage.mapper", sqlSessionFactoryRef = "sqlSessionFactory")
+@MapperScan(basePackages = "com.skty.plugins.filemanage.db.mapper", sqlSessionFactoryRef = "sqlSessionFactory")
 public class DataSourceConfig {
 
     /**
@@ -75,7 +76,10 @@ public class DataSourceConfig {
 
     @Bean("sqlSessionFactory")
     public SqlSessionFactory sqlSessionFactory() throws Exception {
-        SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
+        //使用mybatis plus开发时，需要将之前的SqlSessionFactoryBean改为MybatisSqlSessionFactoryBean才能让其特殊的用法生效，否则只能像普通的mybatis一样使用
+        // SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
+
+        MybatisSqlSessionFactoryBean sessionFactory = new MybatisSqlSessionFactoryBean();
 
         //配置mybatis使用时的数据源，sqlSessionFactory在执行sql时，会调用动态数据源的getConnection方法，这里面会动态返回对应的数据源连接，将会自动选择对应的数据源
         sessionFactory.setDataSource(dynamicDataSource());

@@ -1,6 +1,7 @@
-package com.skty.plugins.filemanage.entity;
+package com.skty.plugins.filemanage.db.entity;
 
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -11,7 +12,7 @@ import java.util.Date;
  */
 @TableName("file")
 public class File {
-    @TableId
+    @TableId(type = IdType.AUTO)
     private Long id;
     private String name;
     private Long dirId;

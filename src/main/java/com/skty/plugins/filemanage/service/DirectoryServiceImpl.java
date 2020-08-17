@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.skty.plugins.filemanage.db.entity.Directory;
 import com.skty.plugins.filemanage.db.mapper.DirectoryMapper;
+import com.skty.plugins.filemanage.exception.RuntimeEPFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,10 +39,10 @@ public class DirectoryServiceImpl implements DirectoryService {
                 directoryMapper.insert(directory);
                 return true;
             } else {
-                throw new IllegalArgumentException("当前目录已经存在，无法创建目录");
+                throw RuntimeEPFactory.paramInvalidException("当前目录已经存在，无法创建目录");
             }
         } else {
-            throw new IllegalArgumentException("父文件不存在，无法为其创建目录");
+            throw RuntimeEPFactory.paramInvalidException("父文件不存在，无法为其创建目录");
         }
     }
 }

@@ -3,8 +3,6 @@ package com.skty.plugins.filemanage.controller;
 import com.skty.plugins.filemanage.kit.ResponseMsg;
 import com.skty.plugins.filemanage.service.DirectoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +19,7 @@ public class DirectoryController {
     @PostMapping("/parent/{parentDir}/newDir/{dirName}")
     public ResponseMsg<String> createDir(@PathVariable Long parentDir, @PathVariable String dirName) {
         boolean result = directoryService.addDir(parentDir, dirName);
-        return ResponseMsg.SUCCESS("{\"msg\":\"创建成功\"}");
+        return ResponseMsg.ok("{\"msg\":\"创建成功\"}").;
     }
 
 }

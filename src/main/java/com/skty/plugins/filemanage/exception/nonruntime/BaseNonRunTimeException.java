@@ -1,4 +1,7 @@
-package com.skty.plugins.filemanage.exception;
+package com.skty.plugins.filemanage.exception.nonruntime;
+
+import com.skty.plugins.filemanage.exception.ExceptionCode;
+import com.skty.plugins.filemanage.exception.runtime.BaseRuntimeException;
 
 import java.security.PrivilegedActionException;
 import java.util.Map;

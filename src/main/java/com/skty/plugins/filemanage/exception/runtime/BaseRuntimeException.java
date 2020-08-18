@@ -1,19 +1,45 @@
-package com.skty.plugins.filemanage.exception;
+package com.skty.plugins.filemanage.exception.runtime;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.skty.plugins.filemanage.exception.ExceptionCode;
+
+import java.util.HashMap;
 import java.util.Map;
 
 /**
  * 基础自定义运行时异常抽象类，后面新建的运行时异常类都需要继承当前的类
  */
+@JsonIgnoreProperties({"cause", "stackTrace", "localizedMessage", "message", "suppressed"})
 public abstract class BaseRuntimeException extends RuntimeException {
+
+    /**
+     * Fills in the execution stack trace. This method records within this
+     * {@code Throwable} object information about the current state of
+     * the stack frames for the current thread.
+     *
+     * <p>If the stack trace of this {@code Throwable} {@linkplain
+     * Throwable#Throwable(String, Throwable, boolean, boolean) is not
+     * writable}, calling this method has no effect.
+     *
+     * @return a reference to this {@code Throwable} instance.
+     * @see Throwable#printStackTrace()
+     */
+    @Override
+    public synchronized Throwable fillInStackTrace() {
+        return null;
+    }
+
     /**
      * 当前异常的异常码
      */
+    @JsonProperty
     protected ExceptionCode code;
 
     /**
      * 异常详情，当异常中有额外的数据异常数据时，可以考虑把一些异常信息放在这里
      */
+    @JsonProperty
     protected Map<String, Object> details;
 
     {
@@ -39,6 +65,12 @@ public abstract class BaseRuntimeException extends RuntimeException {
 
     BaseRuntimeException(String message) {
         super(message);
+        putDetail("reason", message);
+    }
+
+    BaseRuntimeException(Map<String, Object> reasonMap) {
+        super();
+        this.details = reasonMap;
     }
 
     BaseRuntimeException(String message, Throwable cause) {
@@ -73,6 +105,13 @@ public abstract class BaseRuntimeException extends RuntimeException {
 
     public void setDetails(Map<String, Object> details) {
         this.details = details;
+    }
+
+    public void putDetail(String key, String value) {
+        if (details == null) {
+            details = new HashMap<>();
+        }
+        details.put(key, value);
     }
 
     /**

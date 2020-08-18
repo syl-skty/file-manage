@@ -18,7 +18,7 @@ public enum ExceptionCode {
     /**
      * 异常描述信息
      */
-    private String description;
+    public String description;
 
     /**
      * 对应的http响应码

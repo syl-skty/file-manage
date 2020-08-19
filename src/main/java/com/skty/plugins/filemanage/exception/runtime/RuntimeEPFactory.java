@@ -5,7 +5,10 @@ import java.util.Map;
 /**
  * 系统中所有运行时异常仓库
  */
-public class RuntimeEPFactory {
+public abstract class RuntimeEPFactory {
+
+    private RuntimeEPFactory() {
+    }
 
     /**
      * 创建一个参数不合法异常
@@ -15,6 +18,16 @@ public class RuntimeEPFactory {
     public static ParamInvalidException paramInvalidException(String reason) {
         return new ParamInvalidException(reason);
     }
+
+    /**
+     * 创建一个参数不合法异常
+     *
+     * @param reason 原因
+     */
+    public static ParamInvalidException paramInvalidException(String reason, String inner) {
+        return new ParamInvalidException(reason, inner);
+    }
+
 
     /**
      * 创建一个参数不合法异常
@@ -32,6 +45,36 @@ public class RuntimeEPFactory {
      */
     public static UnHandlerException unHandlerException(Exception e) {
         return new UnHandlerException(e);
+    }
+
+    /**
+     * 不合法的参数声名或者组件声名
+     */
+    public static IllegalStatementException illegalStatementException(String reason) {
+        return new IllegalStatementException(reason);
+    }
+
+
+    /**
+     * 不合法的参数声名或者组件声名
+     */
+    public static IllegalStatementException illegalStatementException(String reason, String inner) {
+        return new IllegalStatementException(reason, inner);
+    }
+
+
+    /**
+     * 不支持的操作异常
+     */
+    public static UnSupportOptException unSupportOptException(String reason) {
+        return new UnSupportOptException(reason);
+    }
+
+    /**
+     * 不支持的操作异常
+     */
+    public static UnSupportOptException unSupportOptException(String reason, String inner) {
+        return new UnSupportOptException(reason, inner);
     }
 
 }

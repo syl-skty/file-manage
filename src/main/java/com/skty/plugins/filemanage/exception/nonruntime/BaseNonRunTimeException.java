@@ -1,7 +1,7 @@
 package com.skty.plugins.filemanage.exception.nonruntime;
 
 import com.skty.plugins.filemanage.exception.ExceptionCode;
-import com.skty.plugins.filemanage.exception.runtime.BaseRuntimeException;
+import com.skty.plugins.filemanage.exception.runtime.RuntimeEPFactory;
 
 import java.security.PrivilegedActionException;
 import java.util.Map;
@@ -25,20 +25,9 @@ public abstract class BaseNonRunTimeException extends Exception {
     protected Map<String, Object> details;
 
     {
-        registerToFactory();
         initCode();
         if (code == null) {
-            throw new BaseRuntimeException("当前自定义异常类:{" + getClass().getName() + "}没有自定义异常码，无法创建其实体") {
-                @Override
-                protected void initCode() {
-                    code = ExceptionCode.COMMON_EXCEPTION;
-                }
-
-                @Override
-                protected void registerToFactory() {
-
-                }
-            };
+            throw RuntimeEPFactory.illegalStatementException("当前自定义异常类:{" + getClass().getName() + "}没有自定义异常码，无法创建其实体");
         }
     }
 

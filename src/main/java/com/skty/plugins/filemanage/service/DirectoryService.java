@@ -1,5 +1,7 @@
 package com.skty.plugins.filemanage.service;
 
+import com.skty.plugins.filemanage.vo.DirectoryElementsVo;
+
 public interface DirectoryService {
     /**
      * 创建一个新的目录
@@ -49,4 +51,12 @@ public interface DirectoryService {
      * @param newName 要修改为的新名字
      */
     void modifyDirName(Long dirId, String newName);
+
+    /**
+     * 获取当前目录下所有元素的数据（子目录/文件）
+     *
+     * @param dirId 目录id
+     * @return
+     */
+    DirectoryElementsVo getChildElement(Long dirId);
 }

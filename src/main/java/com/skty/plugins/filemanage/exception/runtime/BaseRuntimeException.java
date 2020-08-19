@@ -12,29 +12,17 @@ import java.util.Map;
  */
 @JsonIgnoreProperties({"cause", "stackTrace", "localizedMessage", "message", "suppressed"})
 public abstract class BaseRuntimeException extends RuntimeException {
-
-    /**
-     * Fills in the execution stack trace. This method records within this
-     * {@code Throwable} object information about the current state of
-     * the stack frames for the current thread.
-     *
-     * <p>If the stack trace of this {@code Throwable} {@linkplain
-     * Throwable#Throwable(String, Throwable, boolean, boolean) is not
-     * writable}, calling this method has no effect.
-     *
-     * @return a reference to this {@code Throwable} instance.
-     * @see Throwable#printStackTrace()
-     */
-    @Override
-    public synchronized Throwable fillInStackTrace() {
-        return null;
-    }
-
+    
     /**
      * 当前异常的异常码
      */
     @JsonProperty
     protected ExceptionCode code;
+
+    /**
+     * 当前异常信息在内部的异常数据，这一部分可以给内部人员进行查看
+     */
+    protected String innerMsg;
 
     /**
      * 异常详情，当异常中有额外的数据异常数据时，可以考虑把一些异常信息放在这里
@@ -66,6 +54,16 @@ public abstract class BaseRuntimeException extends RuntimeException {
     BaseRuntimeException(String message) {
         super(message);
         putDetail("reason", message);
+        innerMsg = message;
+    }
+
+    /**
+     * @param message  可以返回给前端的异常信息
+     * @param innerMsg 内部人员查看的异常信息
+     */
+    public BaseRuntimeException(String message, String innerMsg) {
+        super(message);
+        this.innerMsg = innerMsg;
     }
 
     BaseRuntimeException(Map<String, Object> reasonMap) {
@@ -112,6 +110,14 @@ public abstract class BaseRuntimeException extends RuntimeException {
             details = new HashMap<>();
         }
         details.put(key, value);
+    }
+
+    public String getInnerMsg() {
+        return innerMsg;
+    }
+
+    public void setInnerMsg(String innerMsg) {
+        this.innerMsg = innerMsg;
     }
 
     /**

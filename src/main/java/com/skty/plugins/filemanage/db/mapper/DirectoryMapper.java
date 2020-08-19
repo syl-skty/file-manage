@@ -3,6 +3,7 @@ package com.skty.plugins.filemanage.db.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.skty.plugins.filemanage.db.entity.Directory;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -30,4 +31,11 @@ public interface DirectoryMapper extends BaseMapper<Directory> {
 
     @Select("select id,name,parent_id as parentId,create_date as createDate from directory")
     List<Directory> getAllDir();
+
+    /**
+     * 更新目录名
+     */
+    @Update("update directory set name=#{newName} where id=#{dirId}")
+    int updateDirName(Long dirId, String newName);
+
 }

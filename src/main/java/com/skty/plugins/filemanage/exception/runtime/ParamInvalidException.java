@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * 参数检查异常
  */
-public class ParamInvalidException extends BaseRuntimeException {
+public class ParamInvalidException extends BaseUnStackTraceException {
 
     @Override
     protected void initCode() {
@@ -21,6 +21,14 @@ public class ParamInvalidException extends BaseRuntimeException {
 
     ParamInvalidException(String reason) {
         super(reason);
+    }
+
+    /**
+     * @param message  可以返回给前端的异常信息
+     * @param innerMsg 内部人员查看的异常信息
+     */
+    public ParamInvalidException(String message, String innerMsg) {
+        super(message, innerMsg);
     }
 
     ParamInvalidException(Map<String, Object> reasonMap) {

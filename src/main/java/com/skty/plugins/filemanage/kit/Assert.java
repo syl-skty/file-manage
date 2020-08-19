@@ -1,6 +1,7 @@
 package com.skty.plugins.filemanage.kit;
 
 import com.skty.plugins.filemanage.exception.runtime.RuntimeEPFactory;
+import org.springframework.util.StringUtils;
 
 /**
  * 断言工具类，用于参数判断
@@ -9,6 +10,11 @@ import com.skty.plugins.filemanage.exception.runtime.RuntimeEPFactory;
  * @date 2020/8/18 15:25
  */
 public abstract class Assert {
+
+
+    private Assert() {
+    }
+
     /**
      * 非空断言
      */
@@ -17,4 +23,14 @@ public abstract class Assert {
             throw RuntimeEPFactory.paramInvalidException(msg);
         }
     }
+
+    /**
+     * 字符非空断言
+     */
+    public static void notBlank(String str, String msg) {
+        if (StringUtils.isEmpty(str)) {
+            throw RuntimeEPFactory.paramInvalidException(msg);
+        }
+    }
+    
 }

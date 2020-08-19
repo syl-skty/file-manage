@@ -8,6 +8,7 @@ import com.skty.plugins.filemanage.db.mapper.DirectoryMapper;
 import com.skty.plugins.filemanage.db.mapper.FileMapper;
 import com.skty.plugins.filemanage.exception.runtime.RuntimeEPFactory;
 import com.skty.plugins.filemanage.kit.Assert;
+import com.skty.plugins.filemanage.vo.DirectoryElementsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -113,8 +114,12 @@ public class DirectoryServiceImpl implements DirectoryService {
             recurseDelete(dirId);
         } else {//如果没有递归，就先查看是否存在子目录，如果不存在，就删除成功，如果存在，就删除失败
             if (checkDirHasChildDir(dirId)) {
-                throw RuntimeEPFactory.
+                throw RuntimeEPFactory.unSupportOptException("当前删除的目录下存在子目录，无法完成删除，请先将子目录删除，或者执行递归删除");
             }
+
+            //不存在子目录就直接删除当前目录下的所有文件,之后将当前目录进行删除
+            fileMapper.delete(Wrappers.<File>query().eq("dir_id", dirId));
+            directoryMapper.deleteById(dirId);
         }
     }
 
@@ -150,6 +155,28 @@ public class DirectoryServiceImpl implements DirectoryService {
      */
     @Override
     public void modifyDirName(Long dirId, String newName) {
+        Assert.notNull(dirId, "操作的目录不能为空");
+        Assert.notBlank(newName, "目录修改到的新名字不能为空");
+        directoryMapper.updateDirName(dirId, newName);
+    }
 
+    /**
+     * 获取当前目录下所有元素的数据（子目录/文件）
+     *
+     * @param dirId 目录id
+     * @return
+     */
+    @Override
+    public DirectoryElementsVo getChildElement(Long dirId) {
+        Assert.notNull(dirId, "目录id不能为空");
+        //查出所有目录
+        List<Directory> directories = directoryMapper.selectList
+                (Wrappers.<Directory>query().eq("parent_id", dirId).orderByAsc("create_date"));
+
+        //所有文件
+        List<File> fileList = fileMapper.selectList
+                (Wrappers.<File>query().eq("dir_id", dirId).orderByAsc("update_date"));
+
+        return new DirectoryElementsVo(directories, fileList);
     }
 }

@@ -33,6 +33,8 @@ public class WebExceptionHandler {
     @ResponseBody
     @ExceptionHandler({BaseRuntimeException.class, BaseNonRunTimeException.class, Exception.class})
     public Object handleJson(Exception e, HttpServletRequest request) throws UnHandlerException {
+        //输出日志
+        e.printStackTrace();
         //如果当前请求需要返回的是json数据，就返回json错误数据回去
         if (HttpUtils.requestAcceptType(request, MediaType.APPLICATION_JSON, MediaType.ALL)) {
             if (e instanceof BaseRuntimeException) {

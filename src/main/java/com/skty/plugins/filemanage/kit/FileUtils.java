@@ -22,7 +22,7 @@ public class FileUtils {
     public static String getFileExt(String fileName) {
         if (!StringUtils.isEmpty(fileName)) {
             int index = fileName.lastIndexOf(".");
-            if (fileName.length() > index + 1) {
+            if (index > 0 && fileName.length() > index + 1) {
                 return fileName.substring(index + 1);
             }
         }

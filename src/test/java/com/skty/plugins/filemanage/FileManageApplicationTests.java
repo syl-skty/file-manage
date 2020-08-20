@@ -27,8 +27,10 @@ class FileManageApplicationTests {
                     new DownloadFDfsFile.callbackFile("group1", "M00/00/00/rBEAB18z9N6AO2H2AR5CI56Bqq4353.pdf", downloading -> {
                         try {
                             outputStream.write(downloading.getData());
+                            return 0;
                         } catch (IOException e) {
                             e.printStackTrace();
+                            return -1;
                         }
                     }));
         } catch (IOException e) {

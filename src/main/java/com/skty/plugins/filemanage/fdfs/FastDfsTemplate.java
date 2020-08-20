@@ -1,5 +1,6 @@
 package com.skty.plugins.filemanage.fdfs;
 
+import com.skty.plugins.filemanage.exception.runtime.RuntimeEPFactory;
 import org.csource.common.MyException;
 import org.csource.common.NameValuePair;
 import org.csource.fastdfs.ClientGlobal;
@@ -23,7 +24,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
-import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * 操作fastDfs的工具类
@@ -99,7 +100,7 @@ public class FastDfsTemplate {
 
         try (InputStream inputStream = streamFile.getInputStream()) {
             if (inputStream == null) {
-                throw new IllegalArgumentException("上传文件是，输入流不能为空");
+                throw RuntimeEPFactory.paramInvalidException("上传文件是，输入流不能为空");
             }
             int available = inputStream.available();
             if (available > 0) {
@@ -108,7 +109,7 @@ public class FastDfsTemplate {
                 if (offset > 0) {
                     long skip = inputStream.skip(offset);
                     if (skip < offset) {
-                        throw new IllegalArgumentException("数据流在进行偏移量移动后，到达流尾部，没有数据进行上传");
+                        throw RuntimeEPFactory.paramInvalidException("数据流在进行偏移量移动后，到达流尾部，没有数据进行上传");
                     }
                 }
                 //指定要输出的字节的个数
@@ -140,7 +141,7 @@ public class FastDfsTemplate {
 
                 return transToFDfsFile(response);
             } else {
-                throw new IllegalArgumentException("数据流中不存在数据，没有数据进行上传");
+                throw RuntimeEPFactory.paramInvalidException("数据流中不存在数据，没有数据进行上传");
             }
         } catch (IOException | MyException e) {
             throw new IOException("文件上传失败", e);
@@ -156,7 +157,7 @@ public class FastDfsTemplate {
     public boolean downloadFile(DownloadFDfsFile.callbackFile callbackFile) throws IOException {
         try {
             boolean status = false;
-            Consumer<Downloading> callback = callbackFile.getCallback();
+            Function<Downloading, Integer> callback = callbackFile.getCallback();
             if (callback != null) {
                 status = storageClient.download_file(callbackFile.getGroup(), callbackFile.getFileName(), (l, bytes, i) -> {
                     if (callbackFile.getDownloadByteNum() == -1) {
@@ -165,7 +166,7 @@ public class FastDfsTemplate {
                     }
                     if (i > 0) {
                         Downloading downloading = new Downloading(l, Arrays.copyOf(bytes, i));
-                        callback.accept(downloading);
+                        return callback.apply(downloading);
                     }
                     return 0;
                 }) == 0;
@@ -206,7 +207,8 @@ public class FastDfsTemplate {
      */
     private FDfsFile transToFDfsFile(String[] response) {
         if (response != null && response.length > 1) {
-            return new FDfsFile(response[1], response[0]);
+            String serverPath = storageClient.getTrackerServer().getInetSocketAddress().getHostString();
+            return new FDfsFile(response[1], response[0], serverPath);
         } else {
             throw new IllegalArgumentException("文件上传失败，返回数据错误，数据为:" + Arrays.asList(Objects.requireNonNull(response)));
         }

@@ -1,12 +1,11 @@
 package com.skty.plugins.filemanage.controller;
 
+import com.skty.plugins.filemanage.kit.Response;
 import com.skty.plugins.filemanage.service.DirectoryService;
+import com.skty.plugins.filemanage.vo.DirectoryElementsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/directory")
@@ -17,8 +16,16 @@ public class DirectoryController {
     @ResponseBody
     @PostMapping("/parent/{parentDir}/newDir/{dirName}")
     public Object createDir(@PathVariable Long parentDir, @PathVariable String dirName) {
-        boolean result = directoryService.addDir(parentDir, dirName);
-        return "{\"msg\":\"创建成功\"}";
+        directoryService.addDir(parentDir, dirName);
+        return Response.SUCCESS();
+    }
+
+    /**
+     * 显示指定目录下的所有元素
+     */
+    @GetMapping("/{dirId}/elements")
+    public DirectoryElementsVo showDirElements(@PathVariable Long dirId) {
+        return directoryService.getChildElement(dirId);
     }
 
 }

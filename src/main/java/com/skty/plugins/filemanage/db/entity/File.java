@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.sun.istack.internal.NotNull;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
@@ -14,10 +16,18 @@ import java.util.Date;
  */
 @TableName("file")
 @Data
+@NoArgsConstructor
 public class File {
     @TableId(type = IdType.AUTO)
     private Long id;
     private String name;
+    private String path;
+    @TableField("suffix_path")
+    private String suffixPath;
+    @TableField("`group`")
+    private String group;
+    @TableField("server_path")
+    private String serverPath;
     @TableField("dir_id")
     private Long dirId;
     @TableField("file_size")
@@ -27,4 +37,17 @@ public class File {
     @TableField("update_date")
     private Date updateDate;
     private String type;
+
+    public File(@NotNull String name, @NotNull Long dirId, String serverPath, String group, String suffixPath, Float fileSize, Date createDate, Date updateDate, String type) {
+        this.name = name;
+        this.dirId = dirId;
+        this.suffixPath = suffixPath;
+        this.serverPath = serverPath;
+        this.group = group;
+        this.fileSize = fileSize;
+        this.createDate = createDate;
+        this.updateDate = updateDate;
+        this.type = type;
+        this.path = serverPath + "/" + group + "/" + suffixPath;
+    }
 }

@@ -77,4 +77,19 @@ public abstract class RuntimeEPFactory {
         return new UnSupportOptException(reason, inner);
     }
 
+    /**
+     * 系统操作异常
+     */
+    public static OperationFailException operationFailException(Throwable e, String reason, String inner) {
+        return new OperationFailException(e, reason, inner);
+    }
+
+
+    /**
+     * 系统操作异常
+     */
+    public static OperationFailException operationFailException(String reason, String inner) {
+        return new OperationFailException(reason, inner);
+    }
+
 }

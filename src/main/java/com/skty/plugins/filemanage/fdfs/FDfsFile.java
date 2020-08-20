@@ -20,6 +20,12 @@ public class FDfsFile {
      */
     protected String group;
 
+
+    /**
+     * 上传到的服务器的ip和端口
+     */
+    protected String serverPath;
+
     /**
      * 文件所附带的属性
      */
@@ -29,9 +35,19 @@ public class FDfsFile {
     public FDfsFile() {
     }
 
-    public FDfsFile(String fileName, String group) {
+
+    public String getServerPath() {
+        return serverPath;
+    }
+
+    public void setServerPath(String serverPath) {
+        this.serverPath = serverPath;
+    }
+
+    public FDfsFile(String fileName, String group, String serverPath) {
         this.fileName = fileName;
         this.group = group;
+        this.serverPath = serverPath;
     }
 
     public String getFileName() {
@@ -72,6 +88,7 @@ public class FDfsFile {
                 "fileName='" + fileName + '\'' +
                 ", fileExt='" + fileExt + '\'' +
                 ", group='" + group + '\'' +
+                ", serverPath='" + serverPath + '\'' +
                 ", meta=" + meta +
                 '}';
     }

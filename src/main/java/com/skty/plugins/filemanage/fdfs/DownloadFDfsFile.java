@@ -1,6 +1,6 @@
 package com.skty.plugins.filemanage.fdfs;
 
-import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * 文件下载数据
@@ -18,7 +18,7 @@ public class DownloadFDfsFile {
         /**
          * 下载时的回调函数
          */
-        private Consumer<Downloading> callback;
+        private Function<Downloading, Integer> callback;
 
         /**
          * 下载文件时的字节偏移量
@@ -28,28 +28,28 @@ public class DownloadFDfsFile {
         /**
          * 要下载的字节数
          */
-        private long downloadByteNum=-1;
+        private long downloadByteNum = -1;
 
 
-        public callbackFile(String group,String fileName,long fileOffset, long downloadByteNum,Consumer<Downloading> callback ) {
-            this.fileName=fileName;
-            this.group=group;
+        public callbackFile(String group, String fileName, long fileOffset, long downloadByteNum, Function<Downloading, Integer> callback) {
+            this.fileName = fileName;
+            this.group = group;
             this.callback = callback;
             this.fileOffset = fileOffset;
             this.downloadByteNum = downloadByteNum;
         }
 
-        public callbackFile(String group,String fileName,Consumer<Downloading> callback) {
-            this.fileName=fileName;
-            this.group=group;
+        public callbackFile(String group, String fileName, Function<Downloading, Integer> callback) {
+            this.fileName = fileName;
+            this.group = group;
             this.callback = callback;
         }
 
-        public Consumer<Downloading> getCallback() {
+        public Function<Downloading, Integer> getCallback() {
             return callback;
         }
 
-        public void setCallback(Consumer<Downloading> callback) {
+        public void setCallback(Function<Downloading, Integer> callback) {
             this.callback = callback;
         }
 

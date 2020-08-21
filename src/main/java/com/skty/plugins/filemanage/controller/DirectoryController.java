@@ -6,6 +6,7 @@ import com.skty.plugins.filemanage.vo.DirectoryElementsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/directory")
@@ -24,8 +25,11 @@ public class DirectoryController {
      * 显示指定目录下的所有元素
      */
     @GetMapping("/{dirId}/elements")
-    public DirectoryElementsVo showDirElements(@PathVariable Long dirId) {
-        return directoryService.getChildElement(dirId);
+    public ModelAndView showDirElements(@PathVariable Long dirId) {
+        ModelAndView mv = new ModelAndView("dirElements");
+        DirectoryElementsVo childElement = directoryService.getChildElement(dirId);
+        mv.addObject("elements", childElement);
+        return mv;
     }
 
 }

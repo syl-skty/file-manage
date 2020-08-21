@@ -135,6 +135,7 @@ public class FileServiceImpl implements FileService {
     public void downloadFileByFDFS(HttpServletResponse response, Long fileId) {
         Assert.notNull(fileId, "要下载的文件不能为空");
         File file = fileMapper.selectById(fileId);
+        Assert.notNull(file, "要下载的文件不存在");
         String group = file.getGroup();
         String suffixPath = file.getSuffixPath();
 

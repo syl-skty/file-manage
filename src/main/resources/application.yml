@@ -11,6 +11,11 @@ spring:
       username: skty
   mvc:
     static-path-pattern: /static/**
+    view:
+      prefix: classpath:templates/
+      suffix: .html
+  thymeleaf:
+    prefix: classpath:templates/
 
 server:
   port: 8080
@@ -29,7 +34,5 @@ logging:
           filemanage:
             db:
               mapper: debug
-
-
 
 

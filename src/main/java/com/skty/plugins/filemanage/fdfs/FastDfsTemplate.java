@@ -41,6 +41,20 @@ public class FastDfsTemplate {
     @Value("${fastdfs.bufferSize}")
     private int bufferSize;
 
+
+    /**
+     * 创建一个新的连接
+     *
+     * @return
+     */
+    private StorageClient newStorageClient() {
+        try {
+            return new StorageClient(new TrackerClient().getTrackerServer());
+        } catch (IOException e) {
+            throw RuntimeEPFactory.operationFailException(e, "获取连接异常", "获取连接异常");
+        }
+    }
+
     /**
      * 初始化StorageClient
      */
@@ -83,7 +97,7 @@ public class FastDfsTemplate {
     public FDfsFile uploadFile(UploadFDfsFile.LocalFile localFile) throws IOException {
         String filePath = localFile.getFilePath();
         try {
-            String[] response = storageClient.upload_file(filePath, localFile.getFileExt(), transToPair(localFile.getMeta()));
+            String[] response = newStorageClient().upload_file(filePath, localFile.getFileExt(), transToPair(localFile.getMeta()));
             return transToFDfsFile(response);
         } catch (IOException | MyException e) {
             throw new IOException("本地文件上传失败", e);
@@ -115,7 +129,7 @@ public class FastDfsTemplate {
                 //指定要输出的字节的个数
                 long dataSize = streamFile.getDataSize();
 
-                String[] response = storageClient.upload_file(streamFile.getGroup(), available,
+                String[] response = newStorageClient().upload_file(streamFile.getGroup(), available,
                         outputStream -> {
                             try {
                                 byte[] buffer = new byte[bufferSize];
@@ -159,6 +173,7 @@ public class FastDfsTemplate {
             boolean status = false;
             Function<Downloading, Integer> callback = callbackFile.getCallback();
             if (callback != null) {
+                final StorageClient storageClient = newStorageClient();
                 status = storageClient.download_file(callbackFile.getGroup(), callbackFile.getFileName(), (l, bytes, i) -> {
                     if (callbackFile.getDownloadByteNum() == -1) {
                         callbackFile.setDownloadByteNum(l);
@@ -170,6 +185,7 @@ public class FastDfsTemplate {
                     }
                     return 0;
                 }) == 0;
+                storageClient.close();
             }
             return status;
         } catch (IOException | MyException e) {

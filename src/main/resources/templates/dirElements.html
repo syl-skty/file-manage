@@ -3,19 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        td, th {
+            border: 1px solid;
+        }
+    </style>
 </head>
 <title>文件夹元素</title>
 <body>
 <table title="文件标题">
     <tr>
-        <th>文件名</th>
-        <th>文件大小</th>
-        <th>文件类型</th>
+        <th>元素名</th>
+        <th>元素大小</th>
+        <th>类型</th>
         <th>操作</th>
     </tr>
-    <tr th:each="ele:${elements}">
-
+    <tr th:each="dir:${elements.directories}">
+        <td th:text="${dir.name}"></td>
+        <td th:text="---"></td>
+        <td th:text="文件夹"></td>
+        <td>
+            <span th:text="修改"></span>
+            <span th:text="删除"></span>
+        </td>
     </tr>
+
+    <tr th:each="file:${elements.fileList}">
+        <td th:text="${file.name}"></td>
+        <td th:text="${file.fileSize}"></td>
+        <td th:text="文件"></td>
+        <td>
+            <span th:text="修改"></span>
+            <span th:text="删除"></span>
+            <a th:text="下载" th:href="@{'/file/download/'+${file.id}}" target="_self"></a>
+        </td>
+    </tr>
+
 </table>
 </body>
 </html>

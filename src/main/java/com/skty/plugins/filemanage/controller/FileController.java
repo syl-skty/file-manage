@@ -36,7 +36,7 @@ public class FileController {
      *
      * @param fileId 文件id
      */
-    @GetMapping("/{fileId}")
+    @GetMapping("/download/{fileId}")
     public void downloadFile(HttpServletResponse response, @PathVariable Long fileId) {
         fileService.downloadFileByFDFS(response, fileId);
     }

@@ -16,6 +16,11 @@ spring:
       suffix: .html
   thymeleaf:
     prefix: classpath:templates/
+  servlet:
+    multipart:
+      max-request-size: 100MB
+      max-file-size: 100MB
+
 
 server:
   port: 8080

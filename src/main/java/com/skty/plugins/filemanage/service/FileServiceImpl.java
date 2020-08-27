@@ -10,7 +10,9 @@ import com.skty.plugins.filemanage.fdfs.FastDfsTemplate;
 import com.skty.plugins.filemanage.fdfs.UploadFDfsFile;
 import com.skty.plugins.filemanage.kit.Assert;
 import com.skty.plugins.filemanage.kit.FileUtils;
+import org.apache.catalina.util.URLEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +20,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 /**
@@ -141,10 +144,10 @@ public class FileServiceImpl implements FileService {
 
         //设置请求头
         response.setHeader("Content-Type", "application/octet-stream");
-        response.setHeader("Content-Disposition", "attachment;filename=" + file.getName());
+        response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.DEFAULT.encode(file.getName(), StandardCharsets.UTF_8));
 
         try (ServletOutputStream out = response.getOutputStream()) {
-            fastDfsTemplate.downloadFile(new DownloadFDfsFile.callbackFile(group, suffixPath, downloading -> {
+            boolean result = fastDfsTemplate.downloadFile(new DownloadFDfsFile.callbackFile(group, suffixPath, downloading -> {
                 try {
                     out.write(downloading.getData());
                     return 0;//正常传输，返回0
@@ -152,6 +155,10 @@ public class FileServiceImpl implements FileService {
                     return -1;//出现异常，就停止传输数据，返回停止的状态码
                 }
             }));
+            if (!result && !response.isCommitted()) {
+                response.sendError(HttpStatus.NOT_FOUND.value());
+                throw RuntimeEPFactory.operationFailException("文件下载失败", "下载文件时与文件服务器连接异常");
+            }
         } catch (IOException e) {
             throw RuntimeEPFactory.operationFailException(e, "文件下载失败", "文件下载失败，出现了系统IO异常");
         }

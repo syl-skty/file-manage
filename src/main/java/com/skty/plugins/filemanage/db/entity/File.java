@@ -5,9 +5,9 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.sun.istack.internal.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import java.util.Date;
 
@@ -38,7 +38,7 @@ public class File {
     private Date updateDate;
     private String type;
 
-    public File(@NotNull String name, @NotNull Long dirId, String serverPath, String group, String suffixPath, Float fileSize, Date createDate, Date updateDate, String type) {
+    public File(@NonNull String name, @NonNull Long dirId, String serverPath, String group, String suffixPath, Float fileSize, Date createDate, Date updateDate, String type) {
         this.name = name;
         this.dirId = dirId;
         this.suffixPath = suffixPath;

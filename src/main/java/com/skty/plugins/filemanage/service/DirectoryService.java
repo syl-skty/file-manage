@@ -1,6 +1,9 @@
 package com.skty.plugins.filemanage.service;
 
 import com.skty.plugins.filemanage.vo.DirectoryElementsVo;
+import com.skty.plugins.filemanage.vo.Element;
+
+import java.util.List;
 
 public interface DirectoryService {
     /**
@@ -8,7 +11,6 @@ public interface DirectoryService {
      *
      * @param parentDirId 父目录的id
      * @param name        创建目录的名字
-     * @return true/false
      */
     void addDir(Long parentDirId, String name);
 
@@ -56,7 +58,13 @@ public interface DirectoryService {
      * 获取当前目录下所有元素的数据（子目录/文件）
      *
      * @param dirId 目录id
-     * @return
      */
-    DirectoryElementsVo getChildElement(Long dirId);
+    DirectoryElementsVo getChildElementVo(Long dirId);
+
+    /**
+     * 获取当前目录下所有元素的数据（子目录/文件）
+     *
+     * @param dirId 目录id
+     */
+    List<Element> getChildElements(Long dirId);
 }

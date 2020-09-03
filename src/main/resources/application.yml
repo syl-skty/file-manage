@@ -14,13 +14,17 @@ spring:
     view:
       prefix: classpath:templates/
       suffix: .html
+    format:
+      date-time: yyyy-MM-dd HH:mm:ss
+      date: dd/MM/yyyy
   thymeleaf:
     prefix: classpath:templates/
   servlet:
     multipart:
       max-request-size: 100MB
       max-file-size: 100MB
-
+  jackson:
+    date-format: "yyyy-MM-dd HH:mm:ss"
 
 server:
   port: 8080

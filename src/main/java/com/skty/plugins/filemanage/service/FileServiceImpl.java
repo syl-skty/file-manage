@@ -150,6 +150,7 @@ public class FileServiceImpl implements FileService {
             boolean result = fastDfsTemplate.downloadFile(new DownloadFDfsFile.callbackFile(group, suffixPath, downloading -> {
                 try {
                     out.write(downloading.getData());
+                    out.flush();
                     return 0;//正常传输，返回0
                 } catch (IOException e) {
                     return -1;//出现异常，就停止传输数据，返回停止的状态码

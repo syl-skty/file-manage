@@ -9,11 +9,13 @@ import com.skty.plugins.filemanage.db.mapper.FileMapper;
 import com.skty.plugins.filemanage.exception.runtime.RuntimeEPFactory;
 import com.skty.plugins.filemanage.kit.Assert;
 import com.skty.plugins.filemanage.vo.DirectoryElementsVo;
+import com.skty.plugins.filemanage.vo.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -167,7 +169,7 @@ public class DirectoryServiceImpl implements DirectoryService {
      * @return
      */
     @Override
-    public DirectoryElementsVo getChildElement(Long dirId) {
+    public DirectoryElementsVo getChildElementVo(Long dirId) {
         Assert.notNull(dirId, "目录id不能为空");
         //查出所有目录
         List<Directory> directories = directoryMapper.selectList
@@ -178,5 +180,18 @@ public class DirectoryServiceImpl implements DirectoryService {
                 (Wrappers.<File>query().eq("dir_id", dirId).orderByAsc("update_date"));
 
         return new DirectoryElementsVo(directories, fileList);
+    }
+
+    /**
+     * 获取当前目录下所有元素的数据（子目录/文件）
+     *
+     * @param dirId 目录id
+     */
+    @Override
+    public List<Element> getChildElements(Long dirId) {
+        Assert.notNull(dirId, "目录id不能为空");
+        List<Element> elements = new ArrayList<>(directoryMapper.getChildDirById(dirId));
+        elements.addAll(fileMapper.getFilesByDir(dirId));
+        return elements;
     }
 }

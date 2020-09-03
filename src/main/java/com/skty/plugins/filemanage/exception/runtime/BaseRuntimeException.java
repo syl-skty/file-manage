@@ -1,5 +1,6 @@
 package com.skty.plugins.filemanage.exception.runtime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.skty.plugins.filemanage.exception.ExceptionCode;
@@ -22,6 +23,7 @@ public abstract class BaseRuntimeException extends RuntimeException {
     /**
      * 当前异常信息在内部的异常数据，这一部分可以给内部人员进行查看
      */
+    @JsonIgnore
     protected String innerMsg;
 
     /**

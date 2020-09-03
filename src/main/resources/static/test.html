@@ -3,11 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <link rel="stylesheet" href="https://lib.baomitu.com/element-ui/2.13.2/theme-chalk/index.css">
 </head>
 <body>
-<form enctype="multipart/form-data" method="post" action="/fileManage/file/dir/1" name="form">
-    <label>文件名:</label> <input type="file" name="file">
-    <input type="submit" value="提交">
-</form>
+<div id="fileUpload">
+    <el-upload :action="'/fileManage/file/dir/'+dirId" name="file" multiple
+               :on-success="uploadSuccess">
+        <el-button size="small" type="primary">点击上传</el-button>
+        <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+    </el-upload>
+</div>
 </body>
+<!-- import Vue before Element -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://lib.baomitu.com/element-ui/2.13.2/index.js"></script>
+<script>
+    const vue = new Vue({
+        el: '#fileUpload',
+        data: {
+            dirId: 1
+        },
+        methods: {
+            uploadSuccess: function (response, file, fileList) {
+                console.log(response);
+                console.log(file);
+                console.log(fileList);
+            }
+        }
+    });
+</script>
+
 </html>

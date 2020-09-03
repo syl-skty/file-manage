@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://lib.baomitu.com/element-ui/2.13.2/theme-chalk/index.css">
+    <!-- import Vue before Element -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://lib.baomitu.com/element-ui/2.13.2/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<div id="container" style="width: 100%;height: 100%">
+
+    <el-container>
+        <el-tree :data="treeData" lazy :props="treeProps" :load="loadElements">
+
+        </el-tree>
+    </el-container>
+
+</div>
+
+</body>
+<script>
+    const vue = new Vue({
+        el: '#container',
+        data: {
+            treeProps: {
+                label: "name",
+                children: "",
+                isLeaf: function (data) {
+                    return data.eleType === 1;
+                }
+            },
+            treeData: [{
+                id: 1,
+                label: '一级 1',
+                children: [{
+                    id: 4,
+                    label: '二级 1-1',
+                    children: [{
+                        id: 9,
+                        label: '三级 1-1-1'
+                    }, {
+                        id: 10,
+                        label: '三级 1-1-2'
+                    }]
+                }]
+            }, {
+                id: 2,
+                label: '一级 2',
+                children: [{
+                    id: 5,
+                    label: '二级 2-1'
+                }, {
+                    id: 6,
+                    label: '二级 2-2'
+                }]
+            }, {
+                id: 3,
+                label: '一级 3',
+                children: [{
+                    id: 7,
+                    label: '二级 3-1'
+                }, {
+                    id: 8,
+                    label: '二级 3-2'
+                }]
+            }]
+        },
+        methods: {
+            //懒加载元素
+            loadElements: function (node, resolve) {
+                let dirId = node.data.id;
+                dirId = dirId ? dirId : 1;
+                this.getElements(dirId, resolve);
+            },
+            //发送请求获取数据
+            getElements: function (dirId, resolve) {
+                return axios.get("/fileManage/data/dir/" + dirId + "/elements").then(function (res) {
+                    console.log(res.data);
+                    resolve(res.data);
+                });
+            }
+        },
+        mounted: function () {
+            //this.getElements(1, data => this.treeData = data);
+        }
+    });
+</script>
+</html>

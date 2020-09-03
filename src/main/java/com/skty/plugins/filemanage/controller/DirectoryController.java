@@ -26,8 +26,8 @@ public class DirectoryController {
      */
     @GetMapping("/{dirId}/elements")
     public ModelAndView showDirElements(@PathVariable Long dirId) {
-        ModelAndView mv = new ModelAndView("dirElements");
-        DirectoryElementsVo childElement = directoryService.getChildElement(dirId);
+        ModelAndView mv = new ModelAndView("directory");
+        DirectoryElementsVo childElement = directoryService.getChildElementVo(dirId);
         mv.addObject("elements", childElement);
         return mv;
     }

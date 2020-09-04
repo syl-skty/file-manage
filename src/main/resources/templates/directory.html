@@ -15,8 +15,41 @@
 
     <el-container>
         <el-tree :data="treeData" lazy :props="treeProps" :load="loadElements">
-
+            <span slot-scope="{node,data}">
+                <div v-if="data.eleType===2">
+                    <el-popover trigger="hover" placement="right" :open-delay="400">
+                        <span @click="reNameDir(data.id)">
+                            <el-dropdown-item>重命名文件夹</el-dropdown-item>
+                        </span>
+                        <span @click="addFile(data.id)">
+                            <el-dropdown-item>新增文件</el-dropdown-item>
+                        </span>
+                        <span @click="delDir(data.id)">
+                            <el-dropdown-item>删除此文件夹</el-dropdown-item>
+                        </span>
+                        <span class="el-icon-folder" slot="reference">
+                            {{node.label}}
+                        </span>
+                    </el-popover>
+                </div>
+                <div v-else>
+                     <el-popover trigger="hover" placement="right" content="测试" title="标题">
+                            <span class="el-icon-document" slot="reference">{{node.label}}</span>
+                    </el-popover>
+                </div>
+            </span>
         </el-tree>
+        <el-dialog title="新增文件" :visible.sync="dialogUpload">
+            <el-form>
+                <el-form-item>
+                    <el-upload :auto-upload="false" :name="fileName" :action="dialogUploadPath"
+                               :on-change="fileChoose">
+                        <el-button>选择文件</el-button>
+                    </el-upload>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
+
     </el-container>
 
 </div>
@@ -26,6 +59,9 @@
     const vue = new Vue({
         el: '#container',
         data: {
+            fileName: "",
+            dialogUpload: false,
+            dialogUploadPath: "",
             treeProps: {
                 label: "name",
                 children: "",
@@ -33,46 +69,13 @@
                     return data.eleType === 1;
                 }
             },
-            treeData: [{
-                id: 1,
-                label: '一级 1',
-                children: [{
-                    id: 4,
-                    label: '二级 1-1',
-                    children: [{
-                        id: 9,
-                        label: '三级 1-1-1'
-                    }, {
-                        id: 10,
-                        label: '三级 1-1-2'
-                    }]
-                }]
-            }, {
-                id: 2,
-                label: '一级 2',
-                children: [{
-                    id: 5,
-                    label: '二级 2-1'
-                }, {
-                    id: 6,
-                    label: '二级 2-2'
-                }]
-            }, {
-                id: 3,
-                label: '一级 3',
-                children: [{
-                    id: 7,
-                    label: '二级 3-1'
-                }, {
-                    id: 8,
-                    label: '二级 3-2'
-                }]
-            }]
+            treeData: []
         },
         methods: {
             //懒加载元素
             loadElements: function (node, resolve) {
                 let dirId = node.data.id;
+                console.log(node);
                 dirId = dirId ? dirId : 1;
                 this.getElements(dirId, resolve);
             },
@@ -82,6 +85,36 @@
                     console.log(res.data);
                     resolve(res.data);
                 });
+            },
+            dirRightClick: function (a, b, c, d) {
+                console.log(a + "\n" + b + "\n" + c + "\n" + d);
+                //this.visible = !this.visible;
+                this.triggerH = "click";
+            },
+            //删除文件夹
+            delDir: function (dirId) {
+
+            },
+            //重命名文件夹
+            reNameDir: function (dirId) {
+
+            },
+            //新增文件
+            addFile: function (dirId) {
+                this.dialogUpload = true;
+                this.dialogUploadPath = '/fileManage/file/dir/' + dirId;
+            },
+            //重命名文件
+            renameFile: function (fileId) {
+
+            },
+            //删除文件
+            delFile: function (fileId) {
+
+            },
+            fileChoose: function (file, fileList) {
+                this.fileName += file.name + "; ";
+                console.log("aaa");
             }
         },
         mounted: function () {

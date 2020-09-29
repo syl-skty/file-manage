@@ -5,14 +5,13 @@ import com.skty.plugins.filemanage.db.entity.Directory;
 import com.skty.plugins.filemanage.vo.Element;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * 目录表mapper
  */
-@Repository
+//@Repository
 public interface DirectoryMapper extends BaseMapper<Directory> {
     /**
      * 获取当前目录的子目录

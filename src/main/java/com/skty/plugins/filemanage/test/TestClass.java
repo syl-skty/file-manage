@@ -3,7 +3,6 @@ package com.skty.plugins.filemanage.test;
 import com.skty.plugins.filemanage.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author zhaoyun
@@ -15,8 +14,7 @@ public class TestClass {
     @Autowired
     private FileService fileService;
 
-    @Transactional
-    @TestMethodAnnotation
+    @TestMethodAnnotation(cron = "24 * * * * ?")
     public void testMy(String name){
         System.out.println(name);
     }

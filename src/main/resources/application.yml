@@ -25,6 +25,10 @@ spring:
       max-file-size: 100MB
   jackson:
     date-format: "yyyy-MM-dd HH:mm:ss"
+  redis:
+    host: 49.234.215.112
+    port: 6379
+    password: shiyonglong2
 
 server:
   port: 8080
@@ -43,5 +47,4 @@ logging:
           filemanage:
             db:
               mapper: debug
-
 
